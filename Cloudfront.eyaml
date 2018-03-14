@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion:'2010-09-09'
+Resources:
+  oneTouchDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionCongfig:
+      ############### we can customise origin here ###
+        Origins:
+        - DomainName: www.example.com
+          Id: myCustomOrigin
+          CustomOriginConfig:
+            HTTPPort: '80'
+            HTTPSPort: '443'
+            OriginProtocolPolicy: http-only
+      ##################################################
+        Origins:
+        - DomainNAme: oneTouchbucket.S3.amazonaws.com ### Here we can use elasticbeanstalk instead of S3 as we were discussing in the class
+          Id: oneS3origin
+          S3OriginConfig:
+            OriginAccessIdentity: origin-access-identity/cloudfront/-------
+        Enabled:'true'
+        DefaultRootObject: index.html
+        Logging:
+          IncludeCookies: 'false'
+          Bucket: oneTouchlogs.S3.amazonaws.com
+          Prefix: myprefix
+        DefaultCacheBehavior:
+          LambdaFunctionAssociations:
+            - EventType: string-value
+              LambdaFunctionARN: string-value
+     ########     AllowedMethods:
+          - DELETE
+          - GET
+          - HEAD
+          - OPTIONS
+          - PATCH
+          - POST
+          - PUT  
+      ##############################
+          TargetOriginId: oneS3Origin
+          ForwardedValues:
+            QueryString: 'false'
+            Cookies:
+              Forward: none
+          TrustedSigners:
+          - 1234567890EX
+          - 1234567891EX
+          ViewerProtocolPolicy: allow-all
+        #### probability errors###
+        CustomErrorResponses:
+        - ErrorCode: '404'
+          ResponsePagePath: "/error-pages/404.html"
+          ResponseCode: '200'
+          ErrorCachingMinTTL: '30'
+          ########################
+        PriceClass: PriceClass_200
+        Restrictions:
+          GeoRestriction:
+            RestrictionType: whitelist
+            Locations:
+            - AQ
+            - CV
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: 'true'
+    Tags:
+       - Key: string-value
+         Value: string-value
+
+
