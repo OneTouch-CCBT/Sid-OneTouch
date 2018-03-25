@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Creates Hosted Zone using Route53
+Resources:
+  DNS: 
+    Type: "AWS::Route53::HostedZone"
+    Properties: 
+      HostedZoneConfig: 
+        Comment: "hosted zone for liviero.xyz"
+      Name: "liviero.xyz"
+      VPCs: 
+        - 
+          VPCId: "vpc-984753e0"
+          VPCRegion: "us-east-1"
+        - 
+          VPCId: "vpc-dcb971bb"
+          VPCRegion: "us-west-1"
+      HostedZoneTags: 
+        - 
+          Key: "OneTouch1"
+          Value: "Value1"
+        - 
+          Key: "OneTouch2"
+          Value: "Value2"
+ 
