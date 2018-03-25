@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Creates RecordSet in Hosted Zone using Route53
+Resources:
+  myDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z1A1QP0SZPQPDC
+      Name: onetouch.com.
+      Type: SPF
+      TTL: '900'
+      ResourceRecords:
+      - '"v=spf1 ip4:192.168.0.1/16 -all"'
+  
